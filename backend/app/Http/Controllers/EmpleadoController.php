@@ -1,54 +1,33 @@
 <?php
 
-namespace App\Http\Controllers;
+public function show($id) {
+    $empleado = Empleado::where('user_id', $id)->first();
+    return response()->json($empleado);
+}
 
-use Illuminate\Http\Request;
+public function store(Request $request) {
+    $request->validate([
+        'nombre' => 'required|string',
+        'email' => 'required|email|unique:empleados',
+        'telefono' => 'required|string',
+        'foto_perfil' => 'nullable|string',
+        'entidad_estudios' => 'required|string',
+        'disponibilidad_dia' => 'required|string',
+        'disponibilidad_hora' => 'required|string',
+        'categoria' => 'required|in:capilares,manos_pies',
+    ]);
 
-class EmpleadoController extends Controller
-{
-    //
-    public function index()
-    {
-        $empleados = Empleado::all();
-        return response()->json($empleados);
-    }
+    $empleado = Empleado::create($request->all());
+    return response()->json($empleado);
+}
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nombre' => 'required|string',
-            'email' => 'required|email|unique:empleados',
-            'telefono' => 'required|string',
-            'foto_perfil' => 'nullable|image',
-            'entidad_estudios' => 'required|string',
-            'disponibilidad_dia' => 'required|string',
-            'disponibilidad_hora' => 'required|string',
-        ]);
+public function update(Request $request, $id) {
+    $empleado = Empleado::findOrFail($id);
+    $empleado->update($request->all());
+    return response()->json($empleado);
+}
 
-        $empleado = Empleado::create($validated);
-
-        return response()->json($empleado, 201);
-    }
-
-    public function show($id)
-    {
-        $empleado = Empleado::findOrFail($id);
-        return response()->json($empleado);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $empleado = Empleado::findOrFail($id);
-        $empleado->update($request->all());
-
-        return response()->json($empleado);
-    }
-
-    public function destroy($id)
-    {
-        $empleado = Empleado::findOrFail($id);
-        $empleado->delete();
-
-        return response()->json(['message' => 'Empleado eliminado']);
-    }
+public function destroy($id) {
+    Empleado::destroy($id);
+    return response()->json(['message' => 'Empleado eliminado']);
 }

@@ -14,6 +14,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::middleware('auth:sanctum')->group(function () {
 
+    Route::get('/empleado/{id}', [EmpleadoController::class, 'show']);
+    Route::post('/empleado', [EmpleadoController::class, 'store']);
+    Route::put('/empleado/{id}', [EmpleadoController::class, 'update']);
+    Route::delete('/empleado/{id}', [EmpleadoController::class, 'destroy']);
+
     Route::get('/admin/users', [AdminConfigController::class, 'getUsers']);
     Route::delete('/admin/users/{id}', [AdminConfigController::class, 'destroy']);
 

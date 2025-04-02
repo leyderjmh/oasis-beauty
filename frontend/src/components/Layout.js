@@ -5,13 +5,16 @@ import { useEffect, useState } from "react";
 
 const Layout = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(localStorage.getItem("role") === "admin");
+  const [isEmpleado, setIsEmpleado] = useState(localStorage.getItem("role") === "employee");
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+  
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleStorageChange = () => {
         setIsAdmin(localStorage.getItem("role") === "admin");
         setIsAuthenticated(!!localStorage.getItem("token"));
+        setIsEmpleado(localStorage.getItem("role")=== "employee");
     };
 
     window.addEventListener("storage", handleStorageChange);
@@ -40,8 +43,14 @@ const handleLogout = () => {
           <Link to="/" className="text-xl">*Oasis Beauty*</Link>
           <ul className="flex space-x-4">
             <li><Link to="/services">Servicios</Link></li>
-            <li><Link to="/employees">Empleados</Link></li>
+            
             <li><Link to="/login">Login</Link></li>
+
+            
+            {isEmpleado && (
+              <Link to="/empleado">Empleado</Link>
+            )}
+
             {isAdmin && (
               <Link to="/configuracion" className="bg-blue-500 px-4 py-2 rounded">
                   Configuración

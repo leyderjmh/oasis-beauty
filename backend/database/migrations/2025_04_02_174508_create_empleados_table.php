@@ -20,6 +20,7 @@ return new class extends Migration
         $table->string('entidad_estudios');
         $table->enum('disponibilidad_dia', ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']);
         $table->enum('disponibilidad_hora', ['mañana', 'tarde']);
+        $table->enum('categoria', ['capilares', 'manos_pies']);
         $table->timestamps();
         });
     }
